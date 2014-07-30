@@ -41,7 +41,7 @@ func main() {
 
 	if cmd == "" {
 		list(entries)
-		return
+		os.Exit(0)
 	}
 
 	switch cmd {
