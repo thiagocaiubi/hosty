@@ -53,12 +53,7 @@ func main() {
 				line := strings.Replace(value, comment, " ", 1)
 				entries[entry] = line
 				fileContent = strings.Replace(fileContent, value, line, 1)
-				err = ioutil.WriteFile(hostsFile, []byte(fileContent), 0644)
-    			if err != nil {
-					fmt.Println(err)
-					os.Exit(1)
-					break
-				}
+				write(fileContent)
 			}
 			list(entries)
 		case "disable":
@@ -68,12 +63,7 @@ func main() {
 				line := strings.Replace(value, " ", comment, 1)
 				entries[entry] = line
 				fileContent = strings.Replace(fileContent, value, line, 1)
-				err = ioutil.WriteFile(hostsFile, []byte(fileContent), 0644)
-				if err != nil {
-					fmt.Println(err)
-					os.Exit(1)
-					break
-				}
+				write(fileContent)
 			}
 			list(entries)
 	}
@@ -91,5 +81,13 @@ func list(entries map[string]string) {
 		}
 	} else {
 		fmt.Println("hosty has no entries!")
+	}
+}
+
+func write(fileContent string) {
+	var err = ioutil.WriteFile(hostsFile, []byte(fileContent), 0644)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }
