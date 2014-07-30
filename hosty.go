@@ -49,24 +49,10 @@ func main() {
 			fmt.Println(fileContent)
 		case "enable":
 			entry := flag.Arg(1)
-			value := entries[entry]
-			if strings.HasPrefix(value, comment) {
-				line := strings.Replace(value, comment, whitespace, 1)
-				entries[entry] = line
-				fileContent = strings.Replace(fileContent, value, line, 1)
-				write(fileContent)
-			}
-			list(entries)
+			toggle(fileContent, entries, entry, comment, whitespace)
 		case "disable":
 			entry := flag.Arg(1)
-			value := entries[entry]
-			if strings.HasPrefix(value, whitespace) {
-				line := strings.Replace(value, whitespace, comment, 1)
-				entries[entry] = line
-				fileContent = strings.Replace(fileContent, value, line, 1)
-				write(fileContent)
-			}
-			list(entries)
+			toggle(fileContent, entries, entry, whitespace, comment)
 	}
 
 	os.Exit(0)
@@ -91,4 +77,15 @@ func write(fileContent string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func toggle(fileContent string, entries map[string]string, entry string, current string, replacer string) {
+	line := entries[entry]
+	if strings.HasPrefix(line, current) {
+		line := strings.Replace(line, current, replacer, 1)
+		entries[entry] = line
+		fileContent = strings.Replace(fileContent, line, line, 1)
+		write(fileContent)
+	}
+	list(entries)
 }
