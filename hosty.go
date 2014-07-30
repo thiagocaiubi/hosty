@@ -16,24 +16,7 @@ const (
 )
 
 func main() {
-    fileBytes, err := ioutil.ReadFile(hostsFile)
-    if err != nil {
-		panic(err)
-		os.Exit(1)
-	}
-
-	fileContent := string(fileBytes)
-
-	entries := make(map[string]string)
-
-    lines := strings.Split(fileContent, "\n")
-	for index, line := range lines {
-		if strings.HasPrefix(line, prefix) {
-			entry := strings.Replace(line, prefix, "", -1)
-			nextLineIndex := index + 1
-			entries[entry] = lines[nextLineIndex]
-		}
-	}
+	fileContent, entries := read()
 
 	flag.Parse()
 
@@ -88,4 +71,27 @@ func toggle(fileContent string, entries map[string]string, entry string, current
 		write(fileContent)
 	}
 	list(entries)
+}
+
+func read() (string, map[string]string) {
+	fileBytes, err := ioutil.ReadFile(hostsFile)
+    if err != nil {
+		panic(err)
+		os.Exit(1)
+	}
+
+	fileContent := string(fileBytes)
+
+	entries := make(map[string]string)
+
+    lines := strings.Split(fileContent, "\n")
+	for index, line := range lines {
+		if strings.HasPrefix(line, prefix) {
+			entry := strings.Replace(line, prefix, "", -1)
+			nextLineIndex := index + 1
+			entries[entry] = lines[nextLineIndex]
+		}
+	}
+
+	return fileContent, entries
 }
