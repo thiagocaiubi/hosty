@@ -12,7 +12,7 @@ const (
 	prefix string = "#hosty-"
 	hostsFile string = "/etc/hosts"
 	comment string = "#"
-	whitespace = " "
+	whitespace string = " "
 )
 
 func main() {
