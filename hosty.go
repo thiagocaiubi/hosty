@@ -12,6 +12,7 @@ const (
 	prefix string = "#hosty-"
 	hostsFile string = "/etc/hosts"
 	comment string = "#"
+	whitespace = " "
 )
 
 func main() {
@@ -50,7 +51,7 @@ func main() {
 			entry := flag.Arg(1)
 			value := entries[entry]
 			if strings.HasPrefix(value, comment) {
-				line := strings.Replace(value, comment, " ", 1)
+				line := strings.Replace(value, comment, whitespace, 1)
 				entries[entry] = line
 				fileContent = strings.Replace(fileContent, value, line, 1)
 				write(fileContent)
@@ -59,8 +60,8 @@ func main() {
 		case "disable":
 			entry := flag.Arg(1)
 			value := entries[entry]
-			if strings.HasPrefix(value, " ") {
-				line := strings.Replace(value, " ", comment, 1)
+			if strings.HasPrefix(value, whitespace) {
+				line := strings.Replace(value, whitespace, comment, 1)
 				entries[entry] = line
 				fileContent = strings.Replace(fileContent, value, line, 1)
 				write(fileContent)
