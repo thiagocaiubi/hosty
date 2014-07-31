@@ -65,9 +65,9 @@ func write(fileContent string) {
 func toggle(fileContent string, entries map[string]string, entry string, current string, replacer string) {
 	line := entries[entry]
 	if strings.HasPrefix(line, current) {
-		line := strings.Replace(line, current, replacer, 1)
-		entries[entry] = line
-		fileContent = strings.Replace(fileContent, line, line, 1)
+		newLine := strings.Replace(line, current, replacer, 1)
+		entries[entry] = newLine
+		fileContent = strings.Replace(fileContent, line, newLine, 1)
 		write(fileContent)
 	}
 	list(entries)
