@@ -6,6 +6,7 @@ import (
 	"strings"
     "io/ioutil"
     "os"
+    "sort"
 )
 
 const (
@@ -44,9 +45,14 @@ func main() {
 func list(entries map[string]string) {
 	if len(entries) > 0 {
 		fmt.Println("hosty entries:\n")
-		index := 1
-		for k, v := range entries {
-			fmt.Printf("%d) %s\t%s\n", index, k, v)
+		var keys []string
+		for k := range entries {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		index := 0
+		for _, k := range keys {
+			fmt.Printf("%d) %s\t%s\n", index, k, entries[k])
 			index++
 		}
 	} else {
