@@ -10,13 +10,9 @@
 
     $ hosty cat
 
-### Create an entry
+### Save an entry, use this to create or edit an entry
 
-    $ sudo hosty create static 127.0.0.1 static.example.com
-
-### Edit an entry
-
-    $ sudo hosty edit static 127.0.0.1 static.example.com static1.example.com static2.example.com
+    $ sudo hosty save static 127.0.0.1 static.example.com
 
 ### Enable an entry
 
@@ -26,6 +22,6 @@
 
     $ sudo hosty disable static
 
-### Destroy an entry
+### Remove an entry
 
-    $ sudo hosty destroy static
+    $ sudo hosty remove static

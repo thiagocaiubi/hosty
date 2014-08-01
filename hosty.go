@@ -29,12 +29,12 @@ func main() {
 	}
 
 	switch cmd {
-		case "cat":
+		case "cat", "c":
 			fmt.Println(fileContent)
-		case "enable":
+		case "enable", "e":
 			entry := flag.Arg(1)
 			toggle(fileContent, entries, entry, comment, whitespace)
-		case "disable":
+		case "disable", "d":
 			entry := flag.Arg(1)
 			toggle(fileContent, entries, entry, whitespace, comment)
 	}
