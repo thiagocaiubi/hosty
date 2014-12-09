@@ -1,3 +1,5 @@
+# DANGER: Lots of things missing! Use it at your own risk, or help me get things done! ;)
+
 # hosty
 
 ## Usage
