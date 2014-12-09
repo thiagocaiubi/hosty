@@ -31,6 +31,12 @@ func main() {
 	switch cmd {
 		case "cat", "c":
 			fmt.Println(fileContent)
+		case "save", "s":
+			if len(flag.Args()) < 4 {
+				fmt.Println("hosty bad arguments") //TODO help message
+				os.Exit(1)
+			}
+			fmt.Println()
 		case "enable", "e":
 			entry := flag.Arg(1)
 			toggle(fileContent, entries, entry, comment, whitespace)
