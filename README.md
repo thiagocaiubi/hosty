@@ -12,20 +12,27 @@
 
     $ hosty cat
 
+or
+
+    $ hosty c
+
 ### Save an entry, use this to create or edit an entry
+
+All new entries are enabled by default
 
     $ sudo hosty save static 127.0.0.1 static.example.com
 
 or
 
-	$ sudo hosty s static 127.0.0.1 static.example.com
+    $ sudo hosty s static 127.0.0.1 static.example.com
 
 ### Enable an entry
 
     $ sudo hosty enable static
 
 or
-	$ sudo hosty e static
+
+    $ sudo hosty e static
 
 ### Disable an entry
 
@@ -33,7 +40,7 @@ or
 
 or
 
-	$ sudo hosty d static
+    $ sudo hosty d static
 
 ### Remove an entry
 
@@ -41,4 +48,4 @@ or
 
 or
 
-	$ sudo hosty r static
+    $ sudo hosty r static
