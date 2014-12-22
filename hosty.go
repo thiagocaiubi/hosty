@@ -14,6 +14,7 @@ const (
 	hostsFile string = "/etc/hosts"
 	comment string = "#"
 	whitespace string = " "
+	lineBreak  string = "\n"
 )
 
 func main() {
@@ -29,20 +30,41 @@ func main() {
 	}
 
 	switch cmd {
-		case "cat", "c":
-			fmt.Println(fileContent)
-		case "save", "s":
-			if len(flag.Args()) < 4 {
-				fmt.Println("hosty bad arguments") //TODO help message
-				os.Exit(1)
-			}
-			fmt.Println()
-		case "enable", "e":
-			entry := flag.Arg(1)
-			toggle(fileContent, entries, entry, comment, whitespace)
-		case "disable", "d":
-			entry := flag.Arg(1)
-			toggle(fileContent, entries, entry, whitespace, comment)
+	case "cat", "c":
+		fmt.Println(fileContent)
+	case "save", "s":
+		if len(flag.Args()) < 4 {
+			fmt.Println("hosty bad arguments") //TODO help message
+			os.Exit(1)
+		}
+		entry := flag.Arg(1)
+		ip := flag.Arg(2)
+		domains := strings.Trim(strings.Join(flag.Args()[3:], whitespace), whitespace)
+		newLine := ip + whitespace + domains
+		if line, hasEntry := entries[entry]; hasEntry {
+			// replacing an existing line will enable it by default
+			newLine = whitespace + newLine
+
+			fileContent = strings.Replace(fileContent, line, newLine, 1)
+		} else {
+			// new entry will be enabled by default
+			newLine = whitespace + newLine
+
+			fileContent += prefix + entry + lineBreak
+			fileContent += newLine + lineBreak
+		}
+
+        write(fileContent)
+
+        entries[entry] = newLine
+
+        list(entries)
+	case "enable", "e":
+		entry := flag.Arg(1)
+		toggle(fileContent, entries, entry, comment, whitespace)
+	case "disable", "d":
+		entry := flag.Arg(1)
+		toggle(fileContent, entries, entry, whitespace, comment)
 	}
 
 	os.Exit(0)
@@ -96,7 +118,7 @@ func read() (string, map[string]string) {
 
 	entries := make(map[string]string)
 
-    lines := strings.Split(fileContent, "\n")
+	lines := strings.Split(fileContent, lineBreak)
 	for index, line := range lines {
 		if strings.HasPrefix(line, prefix) {
 			entry := strings.Replace(line, prefix, "", -1)
