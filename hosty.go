@@ -1,18 +1,18 @@
 package main
 
 import (
-	"fmt"
 	"flag"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"sort"
 	"strings"
-    "io/ioutil"
-    "os"
-    "sort"
 )
 
 const (
-	prefix string = "#hosty-"
-	hostsFile string = "/etc/hosts"
-	comment string = "#"
+	prefix     string = "#hosty-"
+	hostsFile  string = "/etc/hosts"
+	comment    string = "#"
 	whitespace string = " "
 	lineBreak  string = "\n"
 )
@@ -54,11 +54,11 @@ func main() {
 			fileContent += newLine + lineBreak
 		}
 
-        write(fileContent)
+		write(fileContent)
 
-        entries[entry] = newLine
+		entries[entry] = newLine
 
-        list(entries)
+		list(entries)
 	case "enable", "e":
 		entry := flag.Arg(1)
 		toggle(fileContent, entries, entry, comment, whitespace)
@@ -115,7 +115,7 @@ func toggle(fileContent string, entries map[string]string, entry string, current
 // return file content and entries' map
 func read() (string, map[string]string) {
 	fileBytes, err := ioutil.ReadFile(hostsFile)
-    if err != nil {
+	if err != nil {
 		panic(err)
 		os.Exit(1)
 	}
