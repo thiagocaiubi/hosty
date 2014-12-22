@@ -70,6 +70,7 @@ func main() {
 	os.Exit(0)
 }
 
+// list prints pretty entries output
 func list(entries map[string]string) {
 	if len(entries) > 0 {
 		fmt.Println("hosty entries:\n")
@@ -88,6 +89,7 @@ func list(entries map[string]string) {
 	}
 }
 
+// write fileContent to hostsFile
 func write(fileContent string) {
 	var err = ioutil.WriteFile(hostsFile, []byte(fileContent), 0644)
 	if err != nil {
@@ -96,6 +98,8 @@ func write(fileContent string) {
 	}
 }
 
+//TODO toggle should be self contained about how char to replace
+// toggle change entry's status from enabled to disabled and the other way around
 func toggle(fileContent string, entries map[string]string, entry string, current string, replacer string) {
 	line := entries[entry]
 	if strings.HasPrefix(line, current) {
@@ -107,6 +111,8 @@ func toggle(fileContent string, entries map[string]string, entry string, current
 	list(entries)
 }
 
+// read and parse hosts' file and put managed entries in a map
+// return file content and entries' map
 func read() (string, map[string]string) {
 	fileBytes, err := ioutil.ReadFile(hostsFile)
     if err != nil {
