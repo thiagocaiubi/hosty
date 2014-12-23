@@ -15,6 +15,7 @@ const (
 	comment    string = "#"
 	whitespace string = " "
 	lineBreak  string = "\n"
+	empty      string = ""
 )
 
 func main() {
@@ -24,7 +25,7 @@ func main() {
 
 	cmd := flag.Arg(0)
 
-	if cmd == "" {
+	if cmd == empty {
 		list(entries)
 		os.Exit(0)
 	}
@@ -65,6 +66,21 @@ func main() {
 	case "disable", "d":
 		entry := flag.Arg(1)
 		toggle(fileContent, entries, entry, whitespace, comment)
+	case "remove", "r":
+		entry := flag.Arg(1)
+		if line, hasEntry := entries[entry]; hasEntry {
+			fileContent = strings.Replace(fileContent, prefix+entry+lineBreak, empty, 1)
+			fileContent = strings.Replace(fileContent, line+lineBreak, empty, 1)
+
+			write(fileContent)
+
+			delete(entries, entry)
+
+			list(entries)
+		} else {
+			fmt.Println("hosty has no entry: " + entry)
+			os.Exit(1)
+		}
 	}
 
 	os.Exit(0)
@@ -127,7 +143,7 @@ func read() (string, map[string]string) {
 	lines := strings.Split(fileContent, lineBreak)
 	for index, line := range lines {
 		if strings.HasPrefix(line, prefix) {
-			entry := strings.Replace(line, prefix, "", -1)
+			entry := strings.Replace(line, prefix, empty, -1)
 			nextLineIndex := index + 1
 			entries[entry] = lines[nextLineIndex]
 		}
