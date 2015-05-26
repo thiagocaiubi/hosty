@@ -19,7 +19,8 @@ const (
 )
 
 func main() {
-	fileContent, entries := read()
+	fileContent := read()
+	entries := parseEntries(fileContent)
 
 	flag.Parse()
 
@@ -114,17 +115,21 @@ func toggle(fileContent string, entries map[string]string, entry string, current
 	list(entries)
 }
 
-// read and parse hostsFile and put managed entries in a map
-// return file content and entries' map
-func read() (string, map[string]string) {
+// read hostsFile
+// return fileContent as string
+func read() string {
 	fileBytes, err := ioutil.ReadFile(hostsFile)
 	if err != nil {
 		panic(err)
 		os.Exit(1)
 	}
 
-	fileContent := string(fileBytes)
+	return string(fileBytes)
+}
 
+// parse hostsFile content and put managed entries in a map
+// return entries' map[string]string
+func parseEntries(fileContent string) map[string]string {
 	entries := make(map[string]string)
 
 	lines := strings.Split(fileContent, lineBreak)
@@ -136,7 +141,7 @@ func read() (string, map[string]string) {
 		}
 	}
 
-	return fileContent, entries
+	return entries
 }
 
 // update new entry if it already exists
