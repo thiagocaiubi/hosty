@@ -114,7 +114,7 @@ func toggle(fileContent string, entries map[string]string, entry string, current
 	list(entries)
 }
 
-// read and parse hosts' file and put managed entries in a map
+// read and parse hostsFile and put managed entries in a map
 // return file content and entries' map
 func read() (string, map[string]string) {
 	fileBytes, err := ioutil.ReadFile(hostsFile)
