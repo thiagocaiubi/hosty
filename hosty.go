@@ -41,21 +41,8 @@ func main() {
 		entry := flag.Arg(1)
 		ip := flag.Arg(2)
 		domains := strings.Trim(strings.Join(flag.Args()[3:], whitespace), whitespace)
-		newLine := ip + whitespace + domains
-		if line, hasEntry := entries[entry]; hasEntry {
-			// replacing an existing line will enable it by default
-			newLine = whitespace + newLine
 
-			fileContent = strings.Replace(fileContent, line, newLine, 1)
-		} else {
-			// new entry will be enabled by default
-			newLine = whitespace + newLine
-
-			fileContent += prefix + entry + lineBreak
-			fileContent += newLine + lineBreak
-		}
-
-		write(fileContent)
+		newLine := save(fileContent, entries, entry, ip, domains)
 
 		entries[entry] = newLine
 
@@ -150,4 +137,27 @@ func read() (string, map[string]string) {
 	}
 
 	return fileContent, entries
+}
+
+// update new entry if it already exists
+// save new entry to fileContent
+// invoke write
+func save(fileContent string, entries map[string]string, entry string, ip string, domains string) string {
+	newLine := ip + whitespace + domains
+	if line, hasEntry := entries[entry]; hasEntry {
+		// replacing an existing line will enable it by default
+		newLine = whitespace + newLine
+
+		fileContent = strings.Replace(fileContent, line, newLine, 1)
+	} else {
+		// new entry will be enabled by default
+		newLine = whitespace + newLine
+
+		fileContent += prefix + entry + lineBreak
+		fileContent += newLine + lineBreak
+	}
+
+	write(fileContent)
+
+	return newLine
 }
