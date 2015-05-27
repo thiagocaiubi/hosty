@@ -16,7 +16,11 @@ const (
 	whitespace string = " "
 	lineBreak  string = "\n"
 	empty      string = ""
+	enabled    string = "✔"
+	disabled   string = "✖"
 )
+
+type printer func(a ...interface{}) (n int, err error)
 
 func main() {
 	fileContent := read()
@@ -27,7 +31,7 @@ func main() {
 	cmd := flag.Arg(0)
 
 	if cmd == empty {
-		list(entries)
+		list(entries, fmt.Print)
 		os.Exit(0)
 	}
 
@@ -47,7 +51,7 @@ func main() {
 
 		entries[entry] = newLine
 
-		list(entries)
+		list(entries, fmt.Print)
 	case "enable", "e":
 		entry := flag.Arg(1)
 		toggle(fileContent, entries, entry, comment, whitespace)
@@ -64,7 +68,7 @@ func main() {
 
 			delete(entries, entry)
 
-			list(entries)
+			list(entries, fmt.Print)
 		} else {
 			fmt.Println("hosty has no entry: " + entry)
 			os.Exit(1)
@@ -75,21 +79,26 @@ func main() {
 }
 
 // list prints pretty entries output
-func list(entries map[string]string) {
+func list(entries map[string]string, print printer) {
 	if len(entries) > 0 {
-		fmt.Println("hosty entries:\n")
+		output := []string{"hosty entries:\n"}
 		var keys []string
 		for k := range entries {
 			keys = append(keys, k)
 		}
 		sort.Strings(keys)
-		index := 0
 		for _, k := range keys {
-			fmt.Printf("%d) %s\t%s\n", index, k, entries[k])
-			index++
+			line := entries[k]
+			status := enabled
+			if strings.HasPrefix(line, comment) {
+				status = disabled
+			}
+
+			output = append(output, fmt.Sprintf("%s %s\t%s\n", status, k, line))
 		}
+		print(strings.Join(output, ""))
 	} else {
-		fmt.Println("hosty has no entries!")
+		print("hosty has no entries!")
 	}
 }
 
@@ -112,7 +121,7 @@ func toggle(fileContent string, entries map[string]string, entry string, current
 		fileContent = strings.Replace(fileContent, line, newLine, 1)
 		write(fileContent)
 	}
-	list(entries)
+	list(entries, fmt.Print)
 }
 
 // read hostsFile
