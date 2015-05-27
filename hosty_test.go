@@ -53,3 +53,19 @@ func TestListPrintsEntriesDisabled(t *testing.T) {
 		return 0, nil
 	})
 }
+
+func TestListPrintsNoEntries(t *testing.T) {
+	entries := make(map[string]string)
+
+	list(entries, func(a ...interface{}) (n int, err error) {
+		if len(a) > 1 {
+			t.Errorf("Unexpected arguments length: %d", len(a))
+		}
+
+		if "hosty has no entries!\n" != a[0] {
+			t.Errorf("Unexpected arguments: %v", a[0])
+		}
+
+		return 0, nil
+	})
+}

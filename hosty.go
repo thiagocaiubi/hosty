@@ -98,7 +98,7 @@ func list(entries map[string]string, print printer) {
 		}
 		print(strings.Join(output, ""))
 	} else {
-		print("hosty has no entries!")
+		print("hosty has no entries!\n")
 	}
 }
 
