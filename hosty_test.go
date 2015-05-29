@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"reflect"
 	"testing"
 )
@@ -56,6 +57,11 @@ func TestListPrintsEntriesDisabled(t *testing.T) {
 
 func TestListPrintsNoEntries(t *testing.T) {
 	entries := make(map[string]string)
+	called := false
+
+	flag.Usage = func() {
+		called = true
+	}
 
 	list(entries, func(a ...interface{}) (n int, err error) {
 		if len(a) > 1 {
@@ -68,4 +74,8 @@ func TestListPrintsNoEntries(t *testing.T) {
 
 		return 0, nil
 	})
+
+	if !called {
+		t.Error("flag.Usage() not called ")
+	}
 }

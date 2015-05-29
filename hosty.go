@@ -22,6 +22,25 @@ const (
 
 type printer func(a ...interface{}) (n int, err error)
 
+func init() {
+	flag.Usage = func() {
+		fmt.Println("Usage:\n")
+		fmt.Println("\thosty [command [arguments]]\n")
+		fmt.Println("The commands are:\n")
+		fmt.Println("\tcat, c         Echo all /etc/hosts content")
+		fmt.Println("\t\thosty cat\n")
+		fmt.Println("\tsave, s        Save an entry, use this to create or edit an entry")
+		fmt.Println("\t\thosty save example-entry 127.0.0.1 example.com\n")
+		fmt.Println("\tenable, e      Enable an entry")
+		fmt.Println("\t\thosty enable example-entry\n")
+		fmt.Println("\tdisable, d     Disable an entry")
+		fmt.Println("\t\thosty disable example-entry\n")
+		fmt.Println("\tremove, r      Remove an entry")
+		fmt.Println("\t\thosty remove example-entry\n")
+		os.Exit(0)
+	}
+}
+
 func main() {
 	fileContent := read()
 	entries := parseEntries(fileContent)
@@ -40,8 +59,7 @@ func main() {
 		fmt.Println(fileContent)
 	case "save", "s":
 		if len(flag.Args()) < 4 {
-			fmt.Println("hosty bad arguments") //TODO help message
-			os.Exit(1)
+			flag.Usage()
 		}
 		entry := flag.Arg(1)
 		ip := flag.Arg(2)
@@ -71,7 +89,7 @@ func main() {
 			list(entries, fmt.Print)
 		} else {
 			fmt.Println("hosty has no entry: " + entry)
-			os.Exit(1)
+			flag.Usage()
 		}
 	}
 
@@ -99,6 +117,7 @@ func list(entries map[string]string, print printer) {
 		print(strings.Join(output, ""))
 	} else {
 		print("hosty has no entries!\n")
+		flag.Usage()
 	}
 }
 
