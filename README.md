@@ -1,4 +1,4 @@
-# hosty
+# hosty [![Circle CI](https://circleci.com/gh/mauricioborges/hosty.svg?style=svg)](https://circleci.com/gh/mauricioborges/hosty)
 
 ## Usage
 
