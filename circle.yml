@@ -1,0 +1,6 @@
+test:
+    post:
+        - ./build
+general:
+    artifacts:
+        - dist/*
