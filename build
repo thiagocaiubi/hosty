@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+set -x
+
+GOARCH=amd64 GOOS=linux go build -o dist/hosty-linux-amd64 hosty.go
+GOARCH=386 GOOS=linux go build -o dist/hosty-linux-386 hosty.go
+GOARCH=amd64 GOOS=darwin go build -o dist/hosty-darwin-amd64 hosty.go

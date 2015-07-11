@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd $GOROOT/src
+
+GOOS=linux GOARCH=amd64 ./make.bash --no-clean
+GOOS=linux GOARCH=386 ./make.bash --no-clean
+
+cd -
