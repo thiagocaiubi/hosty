@@ -1,5 +1,13 @@
 # hosty [![Circle CI](https://circleci.com/gh/thiagocaiubi/hosty.svg?style=svg)](https://circleci.com/gh/thiagocaiubi/hosty)
 
+## Build
+
+You can build it without installing Go using a Docker image:
+
+```shell
+    docker run --rm -v "$PWD":/usr/src/hosty -w /usr/src/hosty golang:1.3 go build -v
+```
+
 ## Usage
 
 ### List all entries managed by hosty
